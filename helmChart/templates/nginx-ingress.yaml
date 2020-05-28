@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: "2048-nginx-ingress"
+  namespace: "2048-game"
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels:
+    app: 2048-nginx-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /game
+            backend:
+              serviceName: service-2048
+              servicePort: 81
+          - path: /*
+            backend:
+              serviceName: prometheus-server
+              servicePort: 80
